@@ -179,8 +179,22 @@ func main() {
              }
          }
      `
-     params := graphql.Params{Schema: schema, RequestString: query}
-     r := graphql.Do(params)
+	//Other Queries
+	// {
+        //    	list {
+        //        ID 
+        //        Name
+	//	Format
+        //          
+        //          
+        //         
+        //     }
+      //   }
+	
+	
+	
+	params := graphql.Params{Schema: schema, RequestString: query}
+     	r := graphql.Do(params)
      if len(r.Errors) > 0 {
          log.Fatalf("failed to execute graphql operation, errors: %+v", r.Errors)
      }
