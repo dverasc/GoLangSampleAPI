@@ -191,6 +191,22 @@ func main() {
         //     }
       //   }
 	
+//More complex query to show advantage over RESTful
+	//query := `
+      //   {
+        //     album(id:1) { 
+          //      Name
+            //    ID
+              //  Formats 
+               // Artist {
+               //     Name
+                }
+      //          Label
+       //         USChartPeak
+       //      }
+       //  }
+   //  `
+	
 	
 	
 	params := graphql.Params{Schema: schema, RequestString: query}
