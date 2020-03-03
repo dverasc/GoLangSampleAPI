@@ -60,7 +60,7 @@ func getAlbum(w http.ResponseWriter, r *http.Request) {
 	for _, item := range albums {
 		if item.ID == params["id"] {
 			json.NewEncoder(w).Encode(item)
-			return
+			return 
 		}
 	}
 }
@@ -132,11 +132,11 @@ func main() {
 	router := mux.NewRouter()
 
 	//endpoints for CRUD blah blah
-	router.HandleFunc("/album", getAlbum).Methods("GET")
-	router.HandleFunc("/album/{id}", getAlbum).Methods("GET")
-	router.HandleFunc("/album", createAlbum).Methods("POST")
-	router.HandleFunc("/album/{id}", updateAlbum).Methods("POST")
-	router.HandleFunc("/album/{id}", deleteAlbum).Methods("DELETE")
+	router.HandleFunc("/Album", getAlbum).Methods("GET")
+	router.HandleFunc("/Album/{id}", getAlbum).Methods("GET")
+	router.HandleFunc("/Album", createAlbum).Methods("POST")
+	router.HandleFunc("/Album/{id}", updateAlbum).Methods("POST")
+	router.HandleFunc("/Album/{id}", deleteAlbum).Methods("DELETE")
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 	//http.ListenAndServe(":8080", router)
