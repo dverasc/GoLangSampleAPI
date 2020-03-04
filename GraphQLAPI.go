@@ -137,6 +137,9 @@ var mutationType = graphql.NewObject(graphql.ObjectConfig{
                 "name": &graphql.ArgumentConfig{
                     Type: graphql.NewNonNull(graphql.String),
                 },
+                "id": &graphql.ArgumentConfig{
+                    Type: graphql.NewNonNull(graphql.Int),
+                },
             },
             Resolve: func(params graphql.ResolveParams) (interface{}, error) {
                 
@@ -195,11 +198,15 @@ func main() {
                 "name": &graphql.ArgumentConfig{
                     Type: graphql.NewNonNull(graphql.String),
                 },
+                "id": &graphql.ArgumentConfig{
+                    Type: graphql.NewNonNull(graphql.Int),
+                },
             },
             Resolve: func(params graphql.ResolveParams) (interface{}, error) {
                 
                 album := Album{
                     Name: params.Args["name"].(string),
+                    ID: params.Args["id"].(int),
                 }
                 albums = append (albums, album)
                 return album, nil
@@ -228,8 +235,9 @@ func main() {
      query :=
      `
      mutation {
-         create(name: "Hello World") {
+         create(name: "STN MTN/Kauai", id: 4) {
              Name
+             ID
          }
     }
  `
