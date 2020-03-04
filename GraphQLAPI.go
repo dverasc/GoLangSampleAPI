@@ -8,6 +8,9 @@ import (
     "github.com/graphql-go/graphql"
 )
 
+var albums []Album
+
+
 type Album struct {
 	ID int 
     Artist Artist
@@ -122,6 +125,32 @@ var albumType = graphql.NewObject(
     },
 )
 
+
+
+var mutationType = graphql.NewObject(graphql.ObjectConfig{
+    Name: "Mutation",
+    Fields: graphql.Fields{
+        "create": &graphql.Field{
+            Type:        albumType,
+            Description: "Create a new Album",
+            Args: graphql.FieldConfigArgument{
+                "name": &graphql.ArgumentConfig{
+                    Type: graphql.NewNonNull(graphql.String),
+                },
+            },
+            Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+                
+                album := Album{
+                    Name: params.Args["name"].(string),
+                }
+                albums = append (albums, album)
+                return album, nil
+            },
+        },
+    },
+})
+
+
 func main() {
    
     albums := populate()
@@ -159,61 +188,75 @@ func main() {
                  return albums, nil
              },
          },
-     }
+         "create": &graphql.Field{
+            Type:        albumType,
+            Description: "Create a new Album",
+            Args: graphql.FieldConfigArgument{
+                "name": &graphql.ArgumentConfig{
+                    Type: graphql.NewNonNull(graphql.String),
+                },
+            },
+            Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+                
+                album := Album{
+                    Name: params.Args["name"].(string),
+                }
+                albums = append (albums, album)
+                return album, nil
+            },
+        },
+        
+        
+        
+        
+        }
+         
+
      rootQuery := graphql.ObjectConfig{Name: "RootQuery", Fields: fields}
-     schemaConfig := graphql.SchemaConfig{Query: graphql.NewObject(rootQuery)}
+     rootMutation := graphql.ObjectConfig{Name: "RootMutation", Fields: fields}
+     schemaConfig := graphql.SchemaConfig{
+		Query:    graphql.NewObject(rootQuery),
+		Mutation: graphql.NewObject(rootMutation),
+	}
+
      schema, err := graphql.NewSchema(schemaConfig)
      if err != nil {
          log.Fatalf("failed to create new schema, error: %v", err)
      }
  
      // Query
-     query := `
-         {
-             album(id:2) {
-                 Name 
-                 Artist {
-                     Name
-                     Albums
-                 }
-             }
-         }
+     query :=
      `
-	//Other Queries
-	// {
-        //    	list {
-        //        ID 
-        //        Name
-	//	Format
-        //          
-        //          
-        //         
-        //     }
-      //   }
-	
-//More complex query to show advantage over RESTful
-	//query := `
-      //   {
-        //     album(id:1) { 
-          //      Name
-            //    ID
-              //  Formats 
-               // Artist {
-               //     Name
-                }
-      //          Label
-       //         USChartPeak
-       //      }
-       //  }
-   //  `
-	
-	
-	
-	params := graphql.Params{Schema: schema, RequestString: query}
-     	r := graphql.Do(params)
+     mutation {
+         create(name: "Hello World") {
+             Name
+         }
+    }
+ `
+    params := graphql.Params{Schema: schema, RequestString: query}
+    r := graphql.Do(params)
+    if len(r.Errors) > 0 {
+     log.Fatalf("failed to execute graphql operation, errors: %+v", r.Errors)
+    }
+    rJSON, _ := json.Marshal(r)
+    fmt.Printf("%s \n", rJSON)
+ 
+ 
+ 
+    query1 :=  `
+     {
+        list {
+            ID
+            Name
+        }
+    }
+`
+
+     params1 := graphql.Params{Schema: schema, RequestString: query1}
+     r1 := graphql.Do(params1)
      if len(r.Errors) > 0 {
          log.Fatalf("failed to execute graphql operation, errors: %+v", r.Errors)
      }
-     rJSON, _ := json.Marshal(r)
-     fmt.Printf("%s \n", rJSON)
+     rJSON1, _ := json.Marshal(r1)
+     fmt.Printf("%s \n", rJSON1)
  }
