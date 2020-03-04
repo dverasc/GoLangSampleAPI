@@ -18,3 +18,5 @@ ___________________________________________________________________________
 
 Updated file is a GraphQL version of the early RESTful code that is the original upload in this repo.
 I converted the main chunk of that code to work with GraphQL in order to better query the information as opposed to have to hit multiple endpoints in the RESTful version. I know it's not extremely complex but the purpose of this exercise was to get my hands dirty and mess around with GraphQL
+
+I added a mutation type and functionality to create an album entry 
